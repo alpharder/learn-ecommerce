@@ -8,8 +8,8 @@ require_once __DIR__ . '/functions.php';
 
 $install = array();
 
-$install['Create DB'] = 'CREATE DATABASE IF NOT EXISTS `itc_eshop` DEFAULT CHARACTER SET = `utf8`;';
-$install['Use DB'] = 'USE `itc_eshop`;';
+$install['Create DB'] = 'CREATE DATABASE IF NOT EXISTS `' . DB_NAME . '` DEFAULT CHARACTER SET = `utf8`;';
+$install['Use DB'] = 'USE `' . DB_NAME . '`;';
 
 // HEREDOC-syntax
 

@@ -8,6 +8,9 @@ define('TEMPLATES_DIR', __DIR__ . '/templates');
 define('HEADER_TEMPLATE_FILE', __DIR__ . '/layouts/header.php');
 define('FOOTER_TEMPLATE_FILE', __DIR__ . '/layouts/footer.php');
 
+// Подключение конфига
+require_once __DIR__ . '/config.php';
+
 // Подключение к БД
 require_once __DIR__ . '/db.php';
 

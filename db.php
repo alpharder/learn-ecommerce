@@ -4,12 +4,12 @@ function get_connection()
 {
     static $pdo = null;
 
-    $database_user = 'root';
-    $database_password = 'root';
+    $database_user = DB_USER;
+    $database_password = DB_PASSWORD;
 
     if ($pdo === null) {
         $pdo = new PDO(
-            'mysql:host=127.0.0.1',
+            'mysql:host=' . DB_HOST,
             $database_user, $database_password
         );
 
@@ -17,7 +17,7 @@ function get_connection()
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $pdo->exec('SET NAMES utf8;');
-        $pdo->exec('USE itc_eshop;');
+        $pdo->exec('USE ' . DB_NAME . ';');
     }
 
     return $pdo;

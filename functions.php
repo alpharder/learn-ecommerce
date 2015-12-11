@@ -36,27 +36,30 @@ function display_template($template_name, $variables = array())
  */
 function get_cart_data()
 {
-    // В эту переменную занесём строку, содержащую идентификаторы товаров,
-    // находящихся в корзине, перечисленные через запятую
-    $product_ids = array_keys($_SESSION['cart']);
-    $product_ids = implode(',', $product_ids);
-
-    // Получим из БД массив с информацией о товарах, находящихся в корзине
-    $products = db_select("SELECT id, price FROM products WHERE id IN ({$product_ids})");
-
     // Общая стоимость товаров в корзине
     $total_cost = 0;
 
     // Общее количество товаров в корзине
     $total_quantity = 0;
 
-    // В цикле обойдём массив с информацией о товарах
-    foreach ($products as $product) {
-        // и прибавим к суммарным переменным данные о каждом товаре
-        $total_quantity += $_SESSION['cart'][$product['id']];
-        $total_cost += $product['price'] * $_SESSION['cart'][$product['id']];
-    }
+    // В эту переменную занесём строку, содержащую идентификаторы товаров,
+    // находящихся в корзине, перечисленные через запятую
+    $product_ids = array_keys($_SESSION['cart']);
+    $product_ids = implode(',', $product_ids);
 
+    // Получим из БД массив с информацией о товарах, находящихся в корзине
+    if (!empty($product_ids)){
+        $products = db_select("SELECT id, price FROM products WHERE id IN ({$product_ids})");
+
+        // В цикле обойдём массив с информацией о товарах
+        foreach ($products as $product) {
+            // и прибавим к суммарным переменным данные о каждом товаре
+            $total_quantity += $_SESSION['cart'][$product['id']];
+            $total_cost += $product['price'] * $_SESSION['cart'][$product['id']];
+        }
+
+    }
+    
     // Вернём массив данных, которые могут быть переданы в шаблон
     return array(
         'quantity' => $total_quantity,
