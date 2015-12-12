@@ -28,3 +28,7 @@
         </tr>
     <?php endforeach; ?>
 </table>
+
+<form action="./index.php?action=checkout" method="POST">
+    <button type="submit">Оформить заказ</button>
+</form>

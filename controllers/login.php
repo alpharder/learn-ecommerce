@@ -31,7 +31,7 @@ if (isset($_POST['email'], $_POST['password'])) {
             $_SESSION['user_id'] = (int) $user['id'];
 
             // ...и отправим на главную страницу
-            header("Location: ./index.php?action=homepage");
+            browser_redirect('homepage');
         } else {
             $errors[] = 'Введён неверный пароль.';
         }

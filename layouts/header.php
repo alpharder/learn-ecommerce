@@ -21,6 +21,12 @@
     <?php endif; ?>
 </div>
 
+<ul style="color: red;">
+<?php foreach (get_and_delete_notifications() as $notification): ?>
+        <li><?=$notification ?></li>
+<?php endforeach; ?>
+</ul>
+
 <ul>
     <?php foreach (get_menu_items() as $menu_item): ?>
         <?php if ($menu_item['is_active']): ?>

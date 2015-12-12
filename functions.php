@@ -36,13 +36,8 @@ function display_template($template_name, $variables = array())
  */
 function get_cart_data()
 {
-    // В эту переменную занесём строку, содержащую идентификаторы товаров,
-    // находящихся в корзине, перечисленные через запятую
-    $product_ids = array_keys($_SESSION['cart']);
-    $product_ids = implode(',', $product_ids);
-
     // Получим из БД массив с информацией о товарах, находящихся в корзине
-    $products = db_select("SELECT id, price FROM products WHERE id IN ({$product_ids})");
+    $products = get_product_data_from_cart();
 
     // Общая стоимость товаров в корзине
     $total_cost = 0;
@@ -69,13 +64,7 @@ function get_cart_data()
  */
 function get_full_cart_data()
 {
-    // В эту переменную занесём строку, содержащую идентификаторы товаров,
-    // находящихся в корзине, перечисленные через запятую
-    $product_ids = array_keys($_SESSION['cart']);
-    $product_ids = implode(',', $product_ids);
-
-    // Получим из БД массив с информацией о товарах, находящихся в корзине
-    $products = db_select("SELECT id, title, price, quantity FROM products WHERE id IN ({$product_ids})");
+    $products = get_product_data_from_cart();
 
     // Общая стоимость товаров в корзине
     $total_cost = 0;
@@ -108,6 +97,20 @@ function get_full_cart_data()
         'total_quantity' => $total_quantity,
         'total_cost' => $total_cost,
     );
+}
+
+function get_product_data_from_cart()
+{
+    // В эту переменную занесём строку, содержащую идентификаторы товаров,
+    // находящихся в корзине, перечисленные через запятую
+    $product_ids = array_keys($_SESSION['cart']);
+    $product_ids = implode(',', $product_ids);
+    $product_ids = empty($product_ids) ? '0' : $product_ids;
+
+    // Получим из БД массив с информацией о товарах, находящихся в корзине
+    $products = db_select("SELECT * FROM products WHERE id IN ({$product_ids})");
+
+    return $products;
 }
 
 /**
@@ -198,4 +201,37 @@ function get_menu_items()
     }
 
     return $items;
+}
+
+function browser_redirect($action, $params = array())
+{
+    $query_parameters = array(
+        'action' => $action
+    );
+
+    $query_parameters = array_merge($params, $query_parameters);
+    $query_parameters = http_build_query($query_parameters);
+
+    header('Location: ./index.php?' . $query_parameters);
+}
+
+function add_notification($message)
+{
+    if (empty($_SESSION['notifications'])) {
+        $_SESSION['notifications'] = array();
+    }
+
+    $_SESSION['notifications'][] = $message;
+}
+
+
+function get_and_delete_notifications()
+{
+    $return = isset($_SESSION['notifications'])
+        ? $_SESSION['notifications']
+        : array();
+
+    unset($_SESSION['notifications']);
+
+    return $return;
 }

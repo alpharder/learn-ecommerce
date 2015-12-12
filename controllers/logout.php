@@ -9,5 +9,5 @@ if (isset($_POST['logout'])) {
     $_SESSION['user_id'] = 0;
     $_SESSION['user'] = [];
 
-    header("Location: ./index.php?action=homepage");
+    browser_redirect('homepage');
 }

@@ -56,7 +56,7 @@ if (isset($_POST['email'], $_POST['password'])) {
 
     // Ошибок не произошло - отправляем пользователя на главную страницу
     if (empty($errors)) {
-        header("Location: ./index.php?action=homepage");
+        browser_redirect('homepage');
     }
 }
 
